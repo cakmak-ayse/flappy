@@ -36,7 +36,7 @@ public class pipe_script : MonoBehaviour
         }
         else
         {
-            Debug.Log("Logic manager found: " + logic);
+           // Debug.Log("Logic manager found: " + logic);
         }
     }
 
@@ -44,10 +44,10 @@ public class pipe_script : MonoBehaviour
     {
         if (logic != null)
         {
-            Debug.Log("Collision detected properly");
+            //Debug.Log("Collision detected properly");
             if(collision.gameObject.tag.Equals("Player") == true){
-                logic.incrementCount();
-                Debug.Log("other IS player confirmed");
+                logic.IncrementCount();
+                //Debug.Log("other IS player confirmed");
             }
             
         }

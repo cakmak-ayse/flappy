@@ -25,7 +25,7 @@ public class bird_script : MonoBehaviour
         }
         else
         {
-            Debug.Log("Logic manager found: " + logic);
+           // Debug.Log("Logic manager found: " + logic);
         }
     }
 
@@ -38,7 +38,7 @@ public class bird_script : MonoBehaviour
             //and to take away the flap to start screen
             if(myRigidBody.gravityScale == 0){
                 myRigidBody.gravityScale =1;
-                logic.StartSceneDectivate();
+                logic.StartScreenDeactivate();
             }
             myRigidBody.velocity = Vector2.up * flapStrength;
             // flap animation?
