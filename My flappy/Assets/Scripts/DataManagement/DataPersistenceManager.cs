@@ -1,117 +1,4 @@
-// using System.Collections.Generic;
-// using System.Linq;
-// using UnityEngine;
-// using UnityEngine.SceneManagement;
-// // Manages data persistence in the game
-// public class DataPersistenceManager : MonoBehaviour
-// {
-
-
-//     //Public fields for data storage
-//     [Header("File Storage Config")]
-//     [SerializeField] private string fileName;
-//     [SerializeField] private bool encrypt;
-//     private FileDataHandler dataHandler;
-//     private GameData gameData;
-//     private List<InterfaceDataPersistence> dataPersistenceObjects;
-
-
-//     // Public property to access the singleton instance
-//     public static DataPersistenceManager Instance
-//     {
-//         get ;
-//         private set ;
-//     }
-
-//     // Awake is called when the script instance is being loaded
-//     private void Awake()
-//     {
-//         // If an instance already exists and it's not this, destroy this instance
-//         if (Instance != null && Instance != this)
-//         {
-//             Debug.LogError("Found more than one DataPersistenceManager");
-//             Destroy(gameObject);
-//         }
-//         else
-//         {
-//             Instance = this;
-//             // Ensure this instance persists across scenes
-//             DontDestroyOnLoad(gameObject);
-//         }
-//     }
-
-
-//     // Load game data when the game starts
-//     private void Start()
-//     {
-//         this.dataPersistenceObjects = FindAllInterfaceDataPersistenceObjects();
-//         LoadGame();
-//     }
-
-//     // Save data whenever the game quits
-//     private void OnApplicationQuit()
-//     {
-//      SaveGame();   
-//     }
-//     private void OnDestroy()
-//     {
-//         SaveGame(); 
-//     }
-//     // Create a new game with default data
-//     public void NewGame()
-//     {
-//         this.gameData = new GameData();
-//     }
-
-//     // Save game data to persistent storage
-//     public void SaveGame()
-//     { 
-//         // Pass the data to other objects to update it
-//         Debug.Log("Saving game data");
-//         for(int i = 0; i <this.dataPersistenceObjects.Count; i++){
-//             InterfaceDataPersistence dataPersistenceObj = this.dataPersistenceObjects[i];
-//             dataPersistenceObj.SaveData(ref gameData);
-//             Debug.Log("Saved highscore ="+ gameData.highScore);
-//         }
-//         // foreach(InterfaceDataPersistence dataPersistenceObj in this.dataPersistenceObjects){
-//         //     dataPersistenceObj.SaveData(ref gameData);
-//         //     Debug.Log("Saved highscore ="+ gameData.highScore);
-//         // } 
-
-
-//     }
-
-//     // Load game data from persistent storage
-//     public void LoadGame()
-//     {
-        
-//         // If no file is found, start a new game
-//         if (this.gameData == null)
-//         {
-//             Debug.Log("No game data found: new game initiated");
-//             NewGame();
-//         }
-//         // Push the loaded data to wherever needed
-//         foreach(InterfaceDataPersistence dataPersistenceObj in this.dataPersistenceObjects){
-//             dataPersistenceObj.LoadData(gameData);
-//         }
-//         Debug.Log("Loaded highscore ="+ gameData.highScore);
-//     }
-
-//     // Find all objects in the scene that implement InterfaceDataPersistence
-//     // public List<InterfaceDataPersistence> FindAllInterfaceDataPersistenceObjects()
-//     // {
-//     //     IEnumerable<InterfaceDataPersistence> idpObjects = FindObjectsOfType<MonoBehaviour>()
-//     //         .OfType<InterfaceDataPersistence>();
-        
-//     //     List<InterfaceDataPersistence> list = new List<InterfaceDataPersistence> (idpObjects);
-//     //     Debug.Log("forming the list of datapersistenceOnjects list = " +  list.ToString());
-//     //     return list;
-//     // }
-
-// }
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -129,37 +16,114 @@ public class DataPersistenceManager : MonoBehaviour
     [SerializeField] private bool encrypt;
     private FileDataHandler dataHandler;
     private GameData gameData;
-    private List<InterfaceDataPersistence> dataPersistenceObjects;
+    private List<InterfaceDataPersistence> dataPersistenceObjects = new List<InterfaceDataPersistence>();
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Debug.Log("Found more than one DataPersistenceManager");
-            Destroy(gameObject);
+            Destroy(gameObject); // Destroy this instance if it's a duplicate
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
 
-    private void Start()
-    {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Initialize data handler
         dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, encrypt);
-        dataPersistenceObjects = FindAllInterfaceDataPersistenceObjects();
-        LoadGame();
     }
 
+    // Save data whenever the game quits
     private void OnApplicationQuit()
     {
         SaveGame();
     }
-
     private void OnDestroy()
     {
         SaveGame();
+    }
+    private void Start()
+    {
+        // Load game data
+        LoadGame();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        dataPersistenceObjects = FindAllInterfaceDataPersistenceObjects();
+        Debug.Log($"Scene {scene.name} loaded, updated data persistence objects list count: {dataPersistenceObjects.Count}");
+        LoadGame();
+        foreach (var obj in dataPersistenceObjects)
+        {
+            Debug.Log($"Data persistence object: {obj}");
+        }
+    }
+
+    public void SaveGame()
+    {
+        Debug.Log("Saving game data");
+
+        if (dataPersistenceObjects != null && dataPersistenceObjects.Count > 0)
+        {
+            Debug.Log($"Before saving, high score = {gameData.highScore}");
+
+            foreach (InterfaceDataPersistence dataPersistenceObj in dataPersistenceObjects)
+            {
+                if (dataPersistenceObj != null)
+                {
+                    dataPersistenceObj.SaveData(ref gameData);
+                }
+                else
+                {
+                    Debug.LogWarning("Encountered a null object in dataPersistenceObjects list.");
+                }
+            }
+
+            Debug.Log($"After saving, high score = {gameData.highScore}");
+        }
+        else
+        {
+            Debug.LogError("dataPersistenceObjects list is null or empty!!!");
+        }
+
+        // Save the changed data to persistent storage
+        //dataHandler.Save(gameData);
+        Debug.Log($"Saved high score = {gameData.highScore}");
+    }
+
+    public void LoadGame()
+    {
+        Debug.Log("Loading game data");
+        //gameData = dataHandler.Load();
+        
+        if (gameData == null)
+        {
+            Debug.Log("No game data found: new game initiated");
+            NewGame();
+        }
+
+        if (dataPersistenceObjects != null && dataPersistenceObjects.Count > 0)
+        {
+            foreach (InterfaceDataPersistence dataPersistenceObj in dataPersistenceObjects)
+            {
+                if (dataPersistenceObj != null)
+                {
+                    dataPersistenceObj.LoadData(gameData);
+                }
+            }
+        }
+
+        Debug.Log($"Loaded high score = {gameData.highScore}");
     }
 
     public void NewGame()
@@ -167,52 +131,14 @@ public class DataPersistenceManager : MonoBehaviour
         gameData = new GameData();
     }
 
-    public void SaveGame()
-    {
-        Debug.Log("Saving game data");
-        if (dataPersistenceObjects != null)
-        {
-            foreach (InterfaceDataPersistence dataPersistenceObj in dataPersistenceObjects)
-            {
-                dataPersistenceObj.SaveData(ref gameData);
-            }
-            Debug.Log("Saved highscore = " + gameData.highScore);
-        }
-        else
-        {
-            Debug.Log("dataPersistenceObjects list is null???");
-        }
-
-        // TODO - Save the changed data
-    }
-
-    public void LoadGame()
-    {
-        Debug.Log("Loading game data");
-        dataHandler.Load();
-        // TODO - Load data
-
-        if (gameData == null)
-        {
-            Debug.Log("No game data found: new game initiated");
-            NewGame();
-        }
-
-        foreach (InterfaceDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
-            dataPersistenceObj.LoadData(gameData);
-        }
-        Debug.Log("Loaded highscore = " + gameData.highScore);
-    }
-
-    // Improved method to find all objects implementing InterfaceDataPersistence
+    // Find all objects in the scene that implement InterfaceDataPersistence
     public List<InterfaceDataPersistence> FindAllInterfaceDataPersistenceObjects()
     {
-        // List to hold all found objects
+        // Reinitialize the list to ensure it's fresh each time
         List<InterfaceDataPersistence> results = new List<InterfaceDataPersistence>();
 
         // Find all objects in the active scene
-        GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
         foreach (GameObject obj in rootObjects)
         {
             results.AddRange(obj.GetComponentsInChildren<InterfaceDataPersistence>(true));
@@ -221,7 +147,12 @@ public class DataPersistenceManager : MonoBehaviour
         // Include objects in DontDestroyOnLoad
         results.AddRange(GetDontDestroyOnLoadObjects());
 
-        Debug.Log("Formed list of data persistence objects, count: " + results.Count);
+        // Debug.Log($"Formed list of data persistence objects, count: {results.Count}");
+        // foreach (var obj in results)
+        // {
+        //     Debug.Log($"Data persistence object: {obj}");
+        // }
+
         return results;
     }
 

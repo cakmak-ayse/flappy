@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 180293531}
   m_Layer: 5
-  m_Name: Game_over_screen
+  m_Name: GameOverScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 378321437}
   - component: {fileID: 378321436}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BG music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,7 +418,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e7c7ee5c3b486cb4481053e9e5001d59, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6f2aab48feb2aca438f4f1732f8a250b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -975,7 +975,7 @@ GameObject:
   - component: {fileID: 707030234}
   - component: {fileID: 707030233}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: RestartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1127,6 +1127,7 @@ MonoBehaviour:
   score: {fileID: 201685250}
   gameOverScreen: {fileID: 180293530}
   startScreen: {fileID: 433183492}
+  restartButton: {fileID: 0}
   count: 0
   gameBegan: 0
 --- !u!4 &815146265
@@ -2055,12 +2056,12 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 6953313311770683447}
   - {fileID: 1648215325}
+  - {fileID: 378321437}
   - {fileID: 677510688}
   - {fileID: 2033038834}
   - {fileID: 1965072909}
   - {fileID: 349846010}
   - {fileID: 2116029223}
   - {fileID: 384580474}
-  - {fileID: 378321437}
   - {fileID: 815146265}
   - {fileID: 1921756671}
