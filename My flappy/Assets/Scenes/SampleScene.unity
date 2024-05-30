@@ -1138,11 +1138,11 @@ Transform:
   m_GameObject: {fileID: 815146263}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.197811, y: -8.27701, z: 0.6967945}
+  m_LocalPosition: {x: 5.923503, y: 1.5058975, z: 0.63805217}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1950974453}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &980654917
 GameObject:
@@ -1578,11 +1578,11 @@ Transform:
   m_GameObject: {fileID: 1921756670}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.274308, y: 9.7829075, z: -0.058742322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1950974453}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1921756672
 MonoBehaviour:
@@ -1596,39 +1596,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a3f04120ba0224da31f2d5cc55dd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1950974452
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1950974453}
-  m_Layer: 0
-  m_Name: Managers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1950974453
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950974452}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.274308, y: 9.7829075, z: -0.058742322}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 815146265}
-  - {fileID: 1921756671}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  fileName: highscore.json
+  encrypt: 0
 --- !u!1 &1965072905
 GameObject:
   m_ObjectHideFlags: 0
@@ -2093,4 +2062,5 @@ SceneRoots:
   - {fileID: 2116029223}
   - {fileID: 384580474}
   - {fileID: 378321437}
-  - {fileID: 1950974453}
+  - {fileID: 815146265}
+  - {fileID: 1921756671}

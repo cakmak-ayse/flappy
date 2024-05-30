@@ -36,16 +36,15 @@ public class FileDataHandler
                     }
                 }
             
-            
+            loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
         }
         return loadedData;
     }
 
-    public void Save(GameData data, string profileId) 
+    public void Save(GameData data) 
     {
         // use Path.Combine to account for different OS's having different path separators
-        string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
-        string backupFilePath = fullPath + backupExtension;
+        string fullPath = Path.Combine(dataDirPath, dataFileName);
         try 
         {
             // create the directory the file will be written to if it doesn't already exist
@@ -87,31 +86,4 @@ public class FileDataHandler
         return modifiedData;
     }
 
-    // private bool AttemptRollback(string fullPath) 
-    // {
-    //     bool success = false;
-    //     string backupFilePath = fullPath + backupExtension;
-    //     try 
-    //     {
-    //         // if the file exists, attempt to roll back to it by overwriting the original file
-    //         if (File.Exists(backupFilePath))
-    //         {
-    //             File.Copy(backupFilePath, fullPath, true);
-    //             success = true;
-    //             Debug.LogWarning("Had to roll back to backup file at: " + backupFilePath);
-    //         }
-    //         // otherwise, we don't yet have a backup file - so there's nothing to roll back to
-    //         else 
-    //         {
-    //             throw new Exception("Tried to roll back, but no backup file exists to roll back to.");
-    //         }
-    //     }
-    //     catch (Exception e) 
-    //     {
-    //         Debug.LogError("Error occured when trying to roll back to backup file at: " 
-    //             + backupFilePath + "\n" + e);
-    //     }
-
-    //     return success;
-    // }
 }

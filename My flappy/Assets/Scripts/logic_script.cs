@@ -12,6 +12,7 @@ public class logic_script : MonoBehaviour, InterfaceDataPersistence
     public Text score;
     public GameObject gameOverScreen;
     public GameObject startScreen;
+    public Button restartButton;
 
        // Private fields for score and game state
     public int count = 0;
@@ -89,4 +90,72 @@ public class logic_script : MonoBehaviour, InterfaceDataPersistence
     {
         GData.highScore = highScore;
     }
+    
+    // Method called on scene load
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Reassign game objects here
+        gameOverScreen = FindGameObjectByName("GameOverScreen");
+        startScreen = FindGameObjectByName("Start_screen");
+        restartButton = FindGameObjectByName("RestartButton").GetComponent<Button>();
+
+        // Reassign button events
+        if (restartButton != null)
+        {
+            restartButton.onClick.RemoveAllListeners(); // Clear existing listeners
+            restartButton.onClick.AddListener(RestartThisScene); // Add your method
+        }
+    }
+
+    // Method to find game objects by name, including inactive objects
+private GameObject FindGameObjectByName(string name)
+{
+    // Search among all root objects in the scene
+    GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+
+    foreach (GameObject rootObject in rootObjects)
+    {
+        GameObject foundObject = FindInChildren(rootObject.transform, name);
+        if (foundObject != null)
+        {
+            return foundObject;
+        }
+    }
+
+    Debug.LogWarning($"GameObject with name {name} not found in the scene.");
+    return null;
+}
+
+// Recursive helper method to search for a child object by name
+private GameObject FindInChildren(Transform parent, string name)
+{
+    // Check if the current object matches the name
+    if (parent.name == name)
+    {
+        return parent.gameObject;
+    }
+
+    // Recursively check all children
+    foreach (Transform child in parent)
+    {
+        GameObject foundObject = FindInChildren(child, name);
+        if (foundObject != null)
+        {
+            return foundObject;
+        }
+    }
+
+    return null;
+}
 }
