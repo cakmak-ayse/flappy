@@ -4,23 +4,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// public class pipe_script : MonoBehaviour
-// {
-//     public logic_script logic;
-
-//     void Start(){
-//         print("find logic");
-//         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<logic_script>();
-//         print(logic);
-//     }
-//     public void OnTriggerEnter2D(Collider2D collision){
-//         logic.incrementCount();
-//         print("detected collision properly");
-//         print("text2");
-
-//     }
-// }
-
 public class pipe_script : MonoBehaviour
 {
     public logic_script logic;

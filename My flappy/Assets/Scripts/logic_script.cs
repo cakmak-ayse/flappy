@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
-public class logic_script : MonoBehaviour, InterfaceDataPersistence
+public class logic_script : MonoBehaviour
 {
     public Text score;
     public GameObject gameOverScreen;
@@ -17,23 +17,23 @@ public class logic_script : MonoBehaviour, InterfaceDataPersistence
     public bool gameBegan = false;
     private static logic_script _instance;
 
-    private void Awake()
-    {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
+    // private void Awake()
+    // {
+    //     if (_instance != null && _instance != this)
+    //     {
+    //         Destroy(gameObject);
+    //     }
+    //     else
+    //     {
+    //         _instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    // }
 
-    private void OnDestroy()
-    {
-        CheckHighscore();
-    }
+    // private void OnDestroy()
+    // {
+    //     CheckHighscore();
+    // }
 
     [ContextMenu("Increment Score")]
     public void IncrementCount()
@@ -51,6 +51,7 @@ public class logic_script : MonoBehaviour, InterfaceDataPersistence
     public void GameOverSceneActivate()
     {
         gameOverScreen.SetActive(true);
+        gameBegan = false;
     }
 
     [ContextMenu("Check Highscore")]
@@ -70,15 +71,6 @@ public class logic_script : MonoBehaviour, InterfaceDataPersistence
         gameBegan = true;
     }
 
-    public void LoadData(GameData GData)
-    {
-        highScore = GData.highScore;
-    }
-
-    public void SaveData(ref GameData GData)
-    {
-        GData.highScore = highScore;
-    }
 
     private void OnEnable()
     {

@@ -10,6 +10,20 @@ public class pipeSpawner_script : MonoBehaviour
     public float range_offset = 2;
     public logic_script logic;
 
+    void Start (){
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<logic_script>();
+        while(logic == null){
+            logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<logic_script>();
+        }
+        if (logic == null)
+        {
+            Debug.LogError("Logic manager not found!");
+        }
+        else
+        {
+           // Debug.Log("Logic manager found: " + logic);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -22,7 +36,7 @@ public class pipeSpawner_script : MonoBehaviour
                 count += Time.deltaTime;
             }
         }
-        
+        // check for score to arrange timer
     }
     void SpawnOject()
     {
