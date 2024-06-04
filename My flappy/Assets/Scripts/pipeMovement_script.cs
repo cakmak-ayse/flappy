@@ -19,4 +19,10 @@ public class pipeMovement_script : MonoBehaviour
         transform.position = transform.position + (Vector3.left * movementSpeed) * Time.deltaTime; 
         // time delta makes sure  you move based on real time and apparently somehow makes your code magically lover fps
     }
+    
+    // Method to set movement speed
+    public void SetMovementSpeed(float speed)
+    {
+        movementSpeed = speed;
+    }
 }
